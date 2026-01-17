@@ -521,15 +521,32 @@ function handleKeyUp(event) {
   keys.delete(event.code);
 }
 
+const DEFAULT_LEVELS = [
+  { id: 1, name: "Training Orbit", rows: 3, cols: 7, invaderSpeed: 32, speedMultiplier: 0.75, invaderDrop: 16, invaderFireRate: 0.0015, shotCooldown: 550 },
+  { id: 2, name: "Moon Skirmish", rows: 4, cols: 8, invaderSpeed: 40, speedMultiplier: 0.9, invaderDrop: 18, invaderFireRate: 0.0025, shotCooldown: 520 },
+  { id: 3, name: "Asteroid Belt", rows: 4, cols: 9, invaderSpeed: 50, speedMultiplier: 1.05, invaderDrop: 20, invaderFireRate: 0.0035, shotCooldown: 490 },
+  { id: 4, name: "Nebula Push", rows: 5, cols: 9, invaderSpeed: 60, speedMultiplier: 1.2, invaderDrop: 22, invaderFireRate: 0.0045, shotCooldown: 460 },
+  { id: 5, name: "Void Siege", rows: 5, cols: 10, invaderSpeed: 72, speedMultiplier: 1.35, invaderDrop: 24, invaderFireRate: 0.0055, shotCooldown: 430 }
+];
+
 async function loadLevels() {
   try {
-    const response = await fetch("/levels.json");
+    const response = await fetch("levels.json");
+    if (!response.ok) throw new Error('Levels fetch failed: ' + response.status);
     const data = await response.json();
     levels = data.levels || data || [];
-    setStatus("Press Enter to start.");
+    if (!levels || levels.length === 0) {
+      levels = DEFAULT_LEVELS.slice();
+      setStatus("Using fallback levels — press Enter to start.");
+    } else {
+      setStatus("Press Enter to start.");
+    }
     updateUi();
   } catch (error) {
-    setStatus("Failed to load levels.");
+    console.warn(error);
+    levels = DEFAULT_LEVELS.slice();
+    setStatus("Using fallback levels (offline). Press Enter to start.");
+    updateUi();
   }
 }
 
