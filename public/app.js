@@ -10,16 +10,6 @@ const BASE_WIDTH = 480;
 const BASE_HEIGHT = 640;
 const STAR_COUNT = 70;
 
-let scale = 1;
-let levels = [];
-let currentLevelIndex = 0;
-let running = false;
-let paused = false;
-let lastTime = 0;
-let score = 0;
-let lives = 3;
-let stars = [];
-
 const DEFAULT_LEVELS = [
   { id: 1, name: "Training Orbit", rows: 3, cols: 7, invaderSpeed: 32, speedMultiplier: 0.75, invaderDrop: 16, invaderFireRate: 0.0015, shotCooldown: 550 },
   { id: 2, name: "Moon Skirmish", rows: 4, cols: 8, invaderSpeed: 40, speedMultiplier: 0.9, invaderDrop: 18, invaderFireRate: 0.0025, shotCooldown: 520 },
@@ -27,6 +17,16 @@ const DEFAULT_LEVELS = [
   { id: 4, name: "Nebula Push", rows: 5, cols: 9, invaderSpeed: 60, speedMultiplier: 1.2, invaderDrop: 22, invaderFireRate: 0.0045, shotCooldown: 460 },
   { id: 5, name: "Void Siege", rows: 5, cols: 10, invaderSpeed: 72, speedMultiplier: 1.35, invaderDrop: 24, invaderFireRate: 0.0055, shotCooldown: 430 }
 ];
+
+let scale = 1;
+let levels = DEFAULT_LEVELS.slice(); // Initialize with default levels immediately
+let currentLevelIndex = 0;
+let running = false;
+let paused = false;
+let lastTime = 0;
+let score = 0;
+let lives = 3;
+let stars = [];
 
 const audio = {
   context: null,
@@ -541,19 +541,17 @@ async function loadLevels() {
     if (!response.ok) throw new Error('Levels fetch failed: ' + response.status);
     const data = await response.json();
     // support both shapes: /api/levels returns { levels } and static file may be an array
-    levels = data.levels || data || [];
-    if (!levels || levels.length === 0) {
-      levels = DEFAULT_LEVELS.slice();
-      setStatus("Using fallback levels — press Enter to start.");
-    } else {
+    const fetchedLevels = data.levels || data || [];
+    if (fetchedLevels && fetchedLevels.length > 0) {
+      levels = fetchedLevels;
       setStatus("Press Enter to start.");
     }
+    // If fetch returns empty, keep the default levels already initialized
     updateUi();
   } catch (error) {
-    // Fallback to embedded levels so the game still runs
-    console.warn(error);
-    levels = DEFAULT_LEVELS.slice();
-    setStatus("Using fallback levels (offline). Press Enter to start.");
+    // Keep the default levels that were already initialized
+    console.warn('Failed to load levels.json, using default levels:', error);
+    setStatus("Press Enter to start.");
     updateUi();
   }
 }

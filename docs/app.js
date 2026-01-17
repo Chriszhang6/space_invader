@@ -11,8 +11,16 @@ const BASE_WIDTH = 480;
 const BASE_HEIGHT = 640;
 const STAR_COUNT = 70;
 
+const DEFAULT_LEVELS = [
+  { id: 1, name: "Training Orbit", rows: 3, cols: 7, invaderSpeed: 32, speedMultiplier: 0.75, invaderDrop: 16, invaderFireRate: 0.0015, shotCooldown: 550 },
+  { id: 2, name: "Moon Skirmish", rows: 4, cols: 8, invaderSpeed: 40, speedMultiplier: 0.9, invaderDrop: 18, invaderFireRate: 0.0025, shotCooldown: 520 },
+  { id: 3, name: "Asteroid Belt", rows: 4, cols: 9, invaderSpeed: 50, speedMultiplier: 1.05, invaderDrop: 20, invaderFireRate: 0.0035, shotCooldown: 490 },
+  { id: 4, name: "Nebula Push", rows: 5, cols: 9, invaderSpeed: 60, speedMultiplier: 1.2, invaderDrop: 22, invaderFireRate: 0.0045, shotCooldown: 460 },
+  { id: 5, name: "Void Siege", rows: 5, cols: 10, invaderSpeed: 72, speedMultiplier: 1.35, invaderDrop: 24, invaderFireRate: 0.0055, shotCooldown: 430 }
+];
+
 let scale = 1;
-let levels = [];
+let levels = DEFAULT_LEVELS.slice(); // Initialize with default levels immediately
 let currentLevelIndex = 0;
 let running = false;
 let paused = false;
@@ -177,6 +185,12 @@ function soundLevelStart() {
 function soundGameOver() {
   playTone({ frequency: 220, type: "sawtooth", duration: 0.22, volume: 0.12, sweep: -140 });
   playTone({ frequency: 160, type: "square", duration: 0.18, volume: 0.1, sweep: -80 });
+}
+
+function updateUi() {
+  uiScore.textContent = score;
+  uiLives.textContent = lives;
+  uiLevel.textContent = levels[currentLevelIndex]?.id ?? 1;
 }
 
 function startLevel() {
@@ -521,31 +535,22 @@ function handleKeyUp(event) {
   keys.delete(event.code);
 }
 
-const DEFAULT_LEVELS = [
-  { id: 1, name: "Training Orbit", rows: 3, cols: 7, invaderSpeed: 32, speedMultiplier: 0.75, invaderDrop: 16, invaderFireRate: 0.0015, shotCooldown: 550 },
-  { id: 2, name: "Moon Skirmish", rows: 4, cols: 8, invaderSpeed: 40, speedMultiplier: 0.9, invaderDrop: 18, invaderFireRate: 0.0025, shotCooldown: 520 },
-  { id: 3, name: "Asteroid Belt", rows: 4, cols: 9, invaderSpeed: 50, speedMultiplier: 1.05, invaderDrop: 20, invaderFireRate: 0.0035, shotCooldown: 490 },
-  { id: 4, name: "Nebula Push", rows: 5, cols: 9, invaderSpeed: 60, speedMultiplier: 1.2, invaderDrop: 22, invaderFireRate: 0.0045, shotCooldown: 460 },
-  { id: 5, name: "Void Siege", rows: 5, cols: 10, invaderSpeed: 72, speedMultiplier: 1.35, invaderDrop: 24, invaderFireRate: 0.0055, shotCooldown: 430 }
-];
-
 async function loadLevels() {
   try {
     const response = await fetch("levels.json?v=20260117");
     if (!response.ok) throw new Error('Levels fetch failed: ' + response.status);
     const data = await response.json();
-    levels = data.levels || data || [];
-    if (!levels || levels.length === 0) {
-      levels = DEFAULT_LEVELS.slice();
-      setStatus("Using fallback levels — press Enter to start.");
-    } else {
+    const fetchedLevels = data.levels || data || [];
+    if (fetchedLevels && fetchedLevels.length > 0) {
+      levels = fetchedLevels;
       setStatus("Press Enter to start.");
     }
+    // If fetch returns empty, keep the default levels already initialized
     updateUi();
   } catch (error) {
-    console.warn(error);
-    levels = DEFAULT_LEVELS.slice();
-    setStatus("Using fallback levels (offline). Press Enter to start.");
+    // Keep the default levels that were already initialized
+    console.warn('Failed to load levels.json, using default levels:', error);
+    setStatus("Press Enter to start.");
     updateUi();
   }
 }
