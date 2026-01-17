@@ -1,0 +1,16 @@
+{
+  "name": "space-invader",
+  "version": "1.0.0",
+  "description": "HTML5 Space Invaders with Node.js level backend",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

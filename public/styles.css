@@ -1,0 +1,216 @@
+:root {
+  color-scheme: dark;
+  font-family: "Share Tech Mono", "Orbitron", "Courier New", monospace;
+  --bg: #070a12;
+  --panel: #0d1423;
+  --panel-glow: rgba(110, 255, 164, 0.15);
+  --primary: #8bffb1;
+  --accent: #68c7ff;
+  --warning: #ff6b88;
+  --text: #e2f0ff;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #0f1b34 0%, var(--bg) 55%, #020409 100%);
+  color: var(--text);
+  display: flex;
+  justify-content: center;
+  padding: 24px;
+}
+
+.app {
+  width: min(1200px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border: 1px solid rgba(139, 255, 177, 0.25);
+  border-radius: 16px;
+  background: linear-gradient(120deg, rgba(15, 24, 43, 0.9), rgba(7, 13, 24, 0.9));
+  box-shadow: 0 0 24px var(--panel-glow);
+}
+
+.title {
+  font-size: clamp(1.4rem, 2vw, 2.4rem);
+  letter-spacing: 0.3rem;
+  text-transform: uppercase;
+}
+
+.title-glow {
+  color: var(--primary);
+  text-shadow: 0 0 12px rgba(139, 255, 177, 0.7), 0 0 32px rgba(139, 255, 177, 0.4);
+}
+
+.meta {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.meta-item {
+  padding: 8px 16px;
+  border-radius: 12px;
+  background: rgba(12, 20, 36, 0.85);
+  border: 1px solid rgba(104, 199, 255, 0.2);
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.12rem;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.meta-item strong {
+  font-size: 1rem;
+  color: var(--accent);
+}
+
+.main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 320px);
+  gap: 24px;
+}
+
+.panel {
+  background: rgba(7, 12, 22, 0.85);
+  border: 1px solid rgba(139, 255, 177, 0.2);
+  border-radius: 20px;
+  padding: 16px;
+  box-shadow: inset 0 0 30px rgba(139, 255, 177, 0.08);
+  position: relative;
+}
+
+.status {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15rem;
+  color: var(--primary);
+  margin-bottom: 12px;
+}
+
+.game-shell {
+  background: repeating-linear-gradient(
+      to bottom,
+      rgba(10, 20, 35, 0.8),
+      rgba(10, 20, 35, 0.8) 2px,
+      rgba(10, 20, 35, 0.95) 2px,
+      rgba(10, 20, 35, 0.95) 4px
+    ),
+    radial-gradient(circle at 30% 20%, rgba(104, 199, 255, 0.1), transparent 55%),
+    rgba(4, 6, 12, 0.9);
+  border-radius: 18px;
+  border: 1px solid rgba(104, 199, 255, 0.25);
+  padding: 12px;
+  min-height: 520px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#game {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 4;
+  border-radius: 12px;
+  border: 1px solid rgba(104, 199, 255, 0.2);
+  background: rgba(1, 2, 4, 0.9);
+  box-shadow: inset 0 0 18px rgba(139, 255, 177, 0.08);
+}
+
+.side {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card {
+  padding: 16px;
+  border-radius: 16px;
+  background: rgba(10, 16, 28, 0.85);
+  border: 1px solid rgba(139, 255, 177, 0.2);
+  box-shadow: 0 0 18px rgba(104, 199, 255, 0.08);
+}
+
+.card h2 {
+  margin-bottom: 12px;
+  color: var(--accent);
+  font-size: 1rem;
+  letter-spacing: 0.2rem;
+  text-transform: uppercase;
+}
+
+.card ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.9rem;
+}
+
+.card li span {
+  color: var(--primary);
+  display: inline-block;
+  width: 80px;
+}
+
+.card p {
+  line-height: 1.5;
+  font-size: 0.9rem;
+  color: rgba(226, 240, 255, 0.8);
+}
+
+.footer {
+  text-align: center;
+  font-size: 0.75rem;
+  letter-spacing: 0.12rem;
+  text-transform: uppercase;
+  color: rgba(226, 240, 255, 0.5);
+}
+
+@media (max-width: 900px) {
+  .main {
+    grid-template-columns: 1fr;
+  }
+
+  .side {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .card {
+    flex: 1 1 220px;
+  }
+}
+
+@media (max-width: 600px) {
+  body {
+    padding: 12px;
+  }
+
+  .header {
+    gap: 12px;
+    justify-content: center;
+  }
+
+  .meta {
+    justify-content: center;
+  }
+
+  .game-shell {
+    min-height: 420px;
+  }
+}
