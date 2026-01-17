@@ -531,7 +531,7 @@ const DEFAULT_LEVELS = [
 
 async function loadLevels() {
   try {
-    const response = await fetch("levels.json");
+    const response = await fetch("levels.json?v=20260117");
     if (!response.ok) throw new Error('Levels fetch failed: ' + response.status);
     const data = await response.json();
     levels = data.levels || data || [];

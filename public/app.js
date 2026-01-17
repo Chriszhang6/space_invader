@@ -537,7 +537,7 @@ function handleKeyUp(event) {
 async function loadLevels() {
   try {
     // Use relative path so GitHub Pages (repo subpath) works correctly
-    const response = await fetch("levels.json");
+    const response = await fetch("levels.json?v=20260117");
     if (!response.ok) throw new Error('Levels fetch failed: ' + response.status);
     const data = await response.json();
     // support both shapes: /api/levels returns { levels } and static file may be an array
