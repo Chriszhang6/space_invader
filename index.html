@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Space Invaders — HTML5</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="header">
+        <div class="title">
+          <span class="title-glow">SPACE INVADERS</span>
+        </div>
+        <div class="meta">
+          <div class="meta-item"><span>Level</span> <strong id="ui-level">1</strong></div>
+          <div class="meta-item"><span>Score</span> <strong id="ui-score">0</strong></div>
+          <div class="meta-item"><span>Lives</span> <strong id="ui-lives">3</strong></div>
+        </div>
+      </header>
+
+      <main class="main">
+        <section class="panel">
+          <div class="status" id="ui-status">Loading levels…</div>
+          <div class="game-shell">
+            <canvas id="game" aria-label="Space Invaders game"></canvas>
+          </div>
+        </section>
+
+        <aside class="side">
+          <div class="card">
+            <h2>Controls</h2>
+            <ul>
+              <li><span>Move</span> ← → / A D</li>
+              <li><span>Fire</span> Space</li>
+              <li><span>Pause</span> P</li>
+              <li><span>Start</span> Enter</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h2>Mission</h2>
+            <p>
+              Clear each wave. Invaders speed up every level. Your ship moves faster
+              than the alien grid—use timing and cover fire.
+            </p>
+          </div>
+        </aside>
+      </main>
+
+      <footer class="footer">
+        <span>Node.js LTS backend serves levels • HTML5 Canvas renderer</span>
+      </footer>
+    </div>
+
+    <script src="app.js?v=20260117" type="module"></script>
+  </body>
+</html>
