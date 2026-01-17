@@ -25,18 +25,20 @@ Levels are served from `data/levels.json` via the `/api/levels` endpoint. Update
 
 ## Deploy to GitHub Pages (zero cost)
 
-You can publish this game as a static site using GitHub Pages. The simplest way is to serve the files from the `docs/` folder on the `main` branch (this repository already contains a `docs/` copy of the site):
+This repository now **automatically deploys the `public/` folder to the `gh-pages` branch** using GitHub Actions whenever you push to `main`. That means you can edit, commit and push — the site will update automatically.
 
+How to use:
 1. Commit and push the repository to GitHub:
    ```bash
    git add .
-   git commit -m "chore: prepare docs for GitHub Pages"
+   git commit -m "chore: update site"
    git push origin main
    ```
-2. Open your repository on GitHub → Settings → Pages → Source → choose `main` branch and `/docs` folder → Save.
-3. After a minute GitHub will publish your site at `https://<your-username>.github.io/<repo-name>/`.
+2. GitHub Actions will run and publish `public/` to the `gh-pages` branch (this may take ~1 minute).
+3. Configure GitHub Pages to serve from the `gh-pages` branch (Repository → Settings → Pages). Your site will be available at `https://<your-username>.github.io/<repo-name>/`.
 
 Notes:
-- The `docs/` folder contains the static site; it is already present and up-to-date with the public build. If you update files in `public/`, copy them into `docs/` and push again.
-- If you prefer a deploy tool, you can use the `gh-pages` package instead to publish the `public/` folder automatically.
+- Do NOT edit files in `docs/` directly; `public/` is the single source of truth for the site.
+- If you want to deploy manually or locally, the `public/` folder is ready to be pushed to any static host.
+- The GitHub Action uses the repository's `GITHUB_TOKEN` so no extra secrets are required.
 
